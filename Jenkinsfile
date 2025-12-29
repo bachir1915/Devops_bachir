@@ -6,10 +6,7 @@ pipeline {
         maven 'maven3'
     }
 
-    environment {
-        JAVA_HOME = "/opt/java/openjdk"
-        PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
-    }
+
     
     stages {  
 
