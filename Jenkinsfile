@@ -6,6 +6,10 @@ pipeline {
         maven 'maven3'
     }
 
+    environment {
+        JAVA_HOME = "${tool 'jdk21'}"
+        PATH = "${JAVA_HOME}/bin:${env.PATH}"
+    }
     
     stages {  
 
