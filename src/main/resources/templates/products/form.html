@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${productId != null ? 'Modifier le Produit' : 'Nouveau Produit'} + ' - DevOps App'">Formulaire
+        Produit</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            margin-bottom: 20px;
+        }
+
+        .card {
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/products}">
+                <i class="bi bi-box-seam"></i> DevOps App
+            </a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/products}"><i class="bi bi-list"></i> Produits</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/products/new}"><i class="bi bi-plus-circle"></i> Nouveau
+                            Produit</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i th:class="${productId != null ? 'bi bi-pencil-square' : 'bi bi-plus-circle'}"></i>
+                            <span th:text="${productId != null ? 'Modifier le Produit' : 'Nouveau Produit'}"></span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="${productId != null ? '/products/' + productId : '/products'}"
+                            th:object="${productRequest}" method="post">
+
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Nom <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="name" th:field="*{name}"
+                                    th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
+                                    placeholder="Nom du produit">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea class="form-control" id="description" th:field="*{description}" rows="3"
+                                    placeholder="Description du produit"></textarea>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="price" class="form-label">Prix (XOF) <span
+                                            class="text-danger">*</span></label>
+                                    <input type="number" step="0.01" class="form-control" id="price" th:field="*{price}"
+                                        th:classappend="${#fields.hasErrors('price')} ? 'is-invalid' : ''"
+                                        placeholder="0.00">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('price')}"
+                                        th:errors="*{price}"></div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="quantity" class="form-label">Quantité <span
+                                            class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="quantity" th:field="*{quantity}"
+                                        th:classappend="${#fields.hasErrors('quantity')} ? 'is-invalid' : ''"
+                                        placeholder="0">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('quantity')}"
+                                        th:errors="*{quantity}"></div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <a th:href="@{/products}" class="btn btn-secondary">
+                                    <i class="bi bi-arrow-left"></i> Retour
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-save"></i>
+                                    <span th:text="${productId != null ? 'Mettre à jour' : 'Créer'}"></span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

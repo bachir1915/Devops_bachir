@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Produits - DevOps App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            margin-bottom: 20px;
+        }
+
+        .card {
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/products}">
+                <i class="bi bi-box-seam"></i> DevOps App
+            </a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/products}"><i class="bi bi-list"></i> Produits</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/products/new}"><i class="bi bi-plus-circle"></i> Nouveau
+                            Produit</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle"></i> <span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-list-ul"></i> Liste des Produits</h5>
+                <a th:href="@{/products/new}" class="btn btn-success btn-sm">
+                    <i class="bi bi-plus-lg"></i> Ajouter
+                </a>
+            </div>
+            <div class="card-body">
+                <!-- Barre de recherche -->
+                <form th:action="@{/products/search}" method="get" class="mb-3">
+                    <div class="input-group">
+                        <input type="text" name="name" class="form-control" placeholder="Rechercher par nom..."
+                            th:value="${searchName}">
+                        <button type="submit" class="btn btn-outline-primary">
+                            <i class="bi bi-search"></i> Rechercher
+                        </button>
+                        <a th:href="@{/products}" class="btn btn-outline-secondary">
+                            <i class="bi bi-x-lg"></i> Réinitialiser
+                        </a>
+                    </div>
+                </form>
+
+                <div th:if="${#lists.isEmpty(products)}" class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> Aucun produit trouvé.
+                </div>
+
+                <table th:if="${!#lists.isEmpty(products)}" class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom</th>
+                            <th>Description</th>
+                            <th>Prix</th>
+                            <th>Quantité</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="product : ${products}">
+                            <td th:text="${product.id}"></td>
+                            <td th:text="${product.name}"></td>
+                            <td th:text="${product.description}"></td>
+                            <td th:text="${#numbers.formatDecimal(product.price, 1, 0)} + ' XOF'"></td>
+                            <td>
+                                <span th:class="${product.quantity > 0 ? 'badge bg-success' : 'badge bg-danger'}"
+                                    th:text="${product.quantity}"></span>
+                            </td>
+                            <td>
+                                <a th:href="@{/products/{id}(id=${product.id})}" class="btn btn-info btn-sm"
+                                    title="Voir">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a th:href="@{/products/{id}/edit(id=${product.id})}" class="btn btn-warning btn-sm"
+                                    title="Modifier">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a th:href="@{/products/{id}/delete(id=${product.id})}" class="btn btn-danger btn-sm"
+                                    title="Supprimer"
+                                    onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit?')">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

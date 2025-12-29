@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="'Produit: ' + ${product.name} + ' - DevOps App'">Détail Produit</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            margin-bottom: 20px;
+        }
+
+        .card {
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/products}">
+                <i class="bi bi-box-seam"></i> DevOps App
+            </a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/products}"><i class="bi bi-list"></i> Produits</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/products/new}"><i class="bi bi-plus-circle"></i> Nouveau
+                            Produit</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="bi bi-box"></i> Détail du Produit</h5>
+                        <div>
+                            <a th:href="@{/products/{id}/edit(id=${product.id})}" class="btn btn-warning btn-sm">
+                                <i class="bi bi-pencil"></i> Modifier
+                            </a>
+                            <a th:href="@{/products/{id}/delete(id=${product.id})}" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit?')">
+                                <i class="bi bi-trash"></i> Supprimer
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-3">ID</dt>
+                            <dd class="col-sm-9" th:text="${product.id}"></dd>
+
+                            <dt class="col-sm-3">Nom</dt>
+                            <dd class="col-sm-9" th:text="${product.name}"></dd>
+
+                            <dt class="col-sm-3">Description</dt>
+                            <dd class="col-sm-9" th:text="${product.description ?: 'Aucune description'}"></dd>
+
+                            <dt class="col-sm-3">Prix</dt>
+                            <dd class="col-sm-9">
+                                <span class="text-success fw-bold"
+                                    th:text="${#numbers.formatDecimal(product.price, 1, 0)} + ' XOF'"></span>
+                            </dd>
+
+                            <dt class="col-sm-3">Quantité</dt>
+                            <dd class="col-sm-9">
+                                <span th:class="${product.quantity > 0 ? 'badge bg-success' : 'badge bg-danger'}"
+                                    th:text="${product.quantity}"></span>
+                                <span th:if="${product.quantity == 0}" class="text-danger ms-2">Rupture de stock</span>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="card-footer">
+                        <a th:href="@{/products}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Retour à la liste
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
