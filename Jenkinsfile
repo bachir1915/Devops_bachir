@@ -7,10 +7,8 @@ pipeline {
     }
 
     environment {
-        SCANNER_HOME = tool 'sonar-scanner'
         JAVA_HOME = '/usr/lib/jvm/java-21-openjdk-amd64'
         PATH = "${JAVA_HOME}/bin:${env.PATH}"
-        
     }
     
     stages {  
@@ -49,7 +47,9 @@ pipeline {
 
     post {
         always {
-            cleanWs()
+            node('') {
+                cleanWs()
+            }
         }       
     }
 }
