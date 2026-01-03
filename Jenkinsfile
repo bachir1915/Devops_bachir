@@ -14,7 +14,7 @@ pipeline {
             steps {
                 git branch: 'main', 
                     credentialsId: 'git-cred', 
-                    url: 'https://github.com/bachir1915/Devops_bachir.git' 
+                    url: 'https://github.com/bachir1915/jenkins_java_bonjour.git' 
             }
         }
 
